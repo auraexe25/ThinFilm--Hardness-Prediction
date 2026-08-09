@@ -1,7 +1,7 @@
 # 🔬 Thin Film Hardness Prediction using Artificial Neural Networks
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange.svg)](https://www.tensorflow.org/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-latest-orange.svg)](https://scikit-learn.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **Author:** Veena Sahu (@Veena Sahu)
@@ -37,11 +37,11 @@ This project predicts the **Vickers Hardness (VHN)** of thin film multi-principa
 The notebook contains a complete, end-to-end ML pipeline:
 
 1. **Imports & Configuration** — all dependencies and model hyperparameters
-2. **Data Loading & Exploration** — dataset overview, statistics, correlation heatmap, target & phase distributions
+2. **Data Loading & Exploration** — dataset overview, statistics, correlation heatmap, feature-target scatter plots, phase distributions
 3. **Data Preparation** — feature extraction, shuffling, train/test split
 4. **ANN Model Definition** — multi-layer perceptron (20 → 15 → 10 → 1 units)
-5. **K-Fold Cross-Validation Training** — 5-fold CV with convergence-safe training
-6. **Results & Visualization** — loss curves, MAE curves, actual vs predicted scatter, error distributions, per-fold performance summary
+5. **K-Fold Cross-Validation Training** — 5-fold CV with multiple restarts for best model selection
+6. **Results & Visualization** — loss curves, actual vs predicted scatter, error distributions, per-fold performance bar charts, summary table
 7. **Conclusion** — summary of results
 
 ## Requirements
@@ -49,17 +49,16 @@ The notebook contains a complete, end-to-end ML pipeline:
 | Package | Version |
 |---------|---------|
 | Python | ≥ 3.8 |
-| TensorFlow | ≥ 2.x |
+| scikit-learn | ≥ 0.22 |
 | pandas | ≥ 1.0 |
 | NumPy | ≥ 1.18 |
-| scikit-learn | ≥ 0.22 |
 | matplotlib | ≥ 3.0 |
 | seaborn | ≥ 0.10 |
 
 ### Install dependencies
 
 ```bash
-pip install tensorflow pandas numpy scikit-learn matplotlib seaborn
+pip install scikit-learn pandas numpy matplotlib seaborn
 ```
 
 ## How to Run
@@ -72,21 +71,21 @@ pip install tensorflow pandas numpy scikit-learn matplotlib seaborn
 jupyter notebook Thin_Film_Hardness_Prediction.ipynb
 ```
 
-4. Results (trained models, predictions, performance logs) will be saved to the `ThinFilm_Hardness_ANN/` directory
+4. Results (predictions, performance logs) will be saved to the `ThinFilm_Hardness_ANN/` directory
 
 ## Model Architecture
 
 ```
 Input (6 features)
-  → Dense(20, sigmoid)
-  → Dense(15, sigmoid)
+  → Dense(20, relu)
+  → Dense(15, relu)
   → Dense(10, relu)
-  → Dense(1, relu)  [Output: Hardness]
+  → Output (1 unit: Hardness)
 ```
 
 - **Optimizer:** Adam (lr = 0.02)
-- **Loss:** Mean Absolute Error (MAE)
-- **Validation:** 5-fold cross-validation
+- **Validation:** 5-fold cross-validation with multiple restarts per fold
+- **Feature scaling:** StandardScaler applied per fold
 
 ## Dataset
 
